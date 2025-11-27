@@ -4,11 +4,13 @@ import pytest
 from calculator import add, subtract, multiply, divide, power
 
 
+# Basic operations tests (marked as NOT slow)
 def test_add():
     """Test addition function."""
     assert add(2, 3) == 5
     assert add(-1, 1) == 0
     assert add(0, 0) == 0
+
 
 def test_subtract():
     """Test subtraction function."""
@@ -16,11 +18,13 @@ def test_subtract():
     assert subtract(0, 5) == -5
     assert subtract(-3, -2) == -1
 
+
 def test_multiply():
     """Test multiplication function."""
     assert multiply(3, 4) == 12
     assert multiply(-2, 3) == -6
     assert multiply(0, 5) == 0
+
 
 def test_divide():
     """Test division function."""
@@ -28,14 +32,36 @@ def test_divide():
     assert divide(9, 3) == 3
     assert divide(-10, 2) == -5
 
+
+# Edge case tests
+@pytest.mark.edge
 def test_divide_by_zero():
     """Test that dividing by zero raises an error."""
     with pytest.raises(ValueError):
         divide(10, 0)
 
+
+@pytest.mark.edge
 def test_power():
     """Test power function."""
     assert power(2, 3) == 8
     assert power(5, 2) == 25
     assert power(10, 0) == 1
     assert power(3, 3) == 27
+
+
+@pytest.mark.edge
+def test_large_numbers():
+    """Test with very large numbers."""
+    assert add(1000000, 2000000) == 3000000
+    assert multiply(1000, 1000) == 1000000
+
+
+# Performance tests (marked as slow)
+@pytest.mark.slow
+def test_many_operations():
+    """Test performing many operations."""
+    result = 0
+    for i in range(10000):
+        result = add(result, 1)
+    assert result == 10000
